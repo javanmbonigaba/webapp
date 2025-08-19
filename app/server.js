@@ -1,15 +1,18 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: './app/.env' });
+
 import express from 'express';
 import { MongoClient } from 'mongodb';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 const mongoUrl = process.env.MONGO_URL; // e.g., mongodb://db:27017/app
 
 let db = null;
 let items = []; // fallback in-memory store
 
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static('app/public'));
 
 async function initDb() {
   if (!mongoUrl) {
