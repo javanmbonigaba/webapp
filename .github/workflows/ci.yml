@@ -1,4 +1,6 @@
-name: CI
+# For more information read: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions
+
+name: TOT CICD
 on:
   push:
     branches: [ main ]
@@ -10,7 +12,6 @@ env:
 jobs:
   build-test-and-push:
     runs-on: ubuntu-latest
-    environment: webapp-env
     permissions:
       contents: read
 
@@ -22,10 +23,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-      
+
       - name: Install deps
         working-directory: app
-        run: npm Install
+        run: npm install
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -37,7 +38,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build image
-        run: docker build -t "$IMAGE" ./app
+        run: docker build -t "$IMAGE" .
 
       - name: Push image
         run: docker push "$IMAGE"
